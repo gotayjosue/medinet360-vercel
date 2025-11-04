@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-const routes = require('./routes/routes');
-const { connectToDatabase } = require('./models/database');
+const routes = require('./routes/routes.js');
+const { connectToDatabase } = require('./models/database.js');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
