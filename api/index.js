@@ -1,2 +1,2 @@
 const app = require('../server');
-module.exports = serverless(app);
+module.exports = app;
