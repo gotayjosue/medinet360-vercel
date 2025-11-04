@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-const routes = require('../routes/routes');
-const { connectToDatabase } = require('../models/database');
+const routes = require('./routes/routes');
+const { connectToDatabase } = require('./models/database');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -9,10 +9,10 @@ const cors = require('cors');
 const path = require('path');
 
 // Rutas API
-const authRoutes = require("../routes/authRoutes.js");
-const patientsRoutes = require("../routes/patientsRoutes.js");
-const appointmentsRoutes = require("../routes/appointmentsRoutes.js");
-const clinicsRoutes = require("../routes/clinicsRoutes.js");
+const authRoutes = require("./routes/authRoutes.js");
+const patientsRoutes = require("./routes/patientsRoutes.js");
+const appointmentsRoutes = require("./routes/appointmentsRoutes.js");
+const clinicsRoutes = require("./routes/clinicsRoutes.js");
 
 // Configuración
 app.use(session({
