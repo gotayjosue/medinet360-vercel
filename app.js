@@ -9,10 +9,10 @@ const cors = require('cors');
 const path = require('path');
 
 // Rutas API
-const authRoutes = require("./routes/authRoutes.js");
-const patientsRoutes = require("./routes/patientsRoutes.js");
-const appointmentsRoutes = require("./routes/appointmentsRoutes.js");
-const clinicsRoutes = require("./routes/clinicsRoutes.js");
+const authRoutes = require("../routes/authRoutes.js");
+const patientsRoutes = require("../routes/patientsRoutes.js");
+const appointmentsRoutes = require("../routes/appointmentsRoutes.js");
+const clinicsRoutes = require("../routes/clinicsRoutes.js");
 
 // Configuración
 app.use(session({
