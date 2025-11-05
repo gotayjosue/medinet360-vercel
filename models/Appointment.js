@@ -24,6 +24,7 @@ const appointmentSchema = new mongoose.Schema(
       enum: ["scheduled", "completed", "cancelled"],
       default: "scheduled",
     },
+    duration: { type: String, required: true },
   },
   { timestamps: true }
 );
