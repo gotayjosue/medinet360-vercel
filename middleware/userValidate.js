@@ -13,6 +13,7 @@ validate.userValidationRules = () => {
     body('password').matches(/[@$!%*?&]/).withMessage('Password must contain at least one special character'),
     body('password').matches(/[0-9]/).withMessage('Password must contain at least one number'),
     body('password').matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter'),
+    body('role').isIn(['doctor', 'assistant']).withMessage('Invalid role'),
   ];
 };
 
