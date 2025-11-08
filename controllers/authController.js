@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.js");
 const Clinic = require("../models/Clinic.js");
+const { error } = require("console");
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
@@ -9,12 +10,21 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 const register = async (req, res) => {
   try {
     const { name, lastName, email, password, role, clinicName, clinicId } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Verificar si el email ya está registrado
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "El correo ya está registrado" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
     let assignedClinicId = clinicId;
 
     // Si es doctor: crea nueva clínica
     if (role === "doctor") {
+      if (!clinicName){
+        return res.status(400).json({ error:"Debes ingresar el nombre de la clinica" })
+      }
       const newClinic = await Clinic.create({
         name: clinicName,
         adminId: null, // lo llenamos después
@@ -25,7 +35,7 @@ const register = async (req, res) => {
     // Si es ASISTENTE → debe seleccionar una clínica existente
     if (role === "assistant") {
       if (!clinicId)
-        return res.status(400).json({ error: "Debes seleccionar una clínica existente" });
+        return res.status(400).json({ error: "Debes ingresar el ID de una clínica existente" });
 
       const clinicExists = await Clinic.findById(clinicId);
       if (!clinicExists)
