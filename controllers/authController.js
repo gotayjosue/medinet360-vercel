@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 // 🔹 REGISTRO
 const register = async (req, res) => {
   try {
-    const { name, email, password, role, clinicName, clinicId } = req.body;
+    const { name, lastName, email, password, role, clinicName, clinicId } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     let assignedClinicId = clinicId;
@@ -37,6 +37,7 @@ const register = async (req, res) => {
     // Crear usuario
     const user = await User.create({
       name,
+      lastName,
       email,
       password: hashedPassword,
       role,
