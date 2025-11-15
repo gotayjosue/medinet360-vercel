@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { type } = require("os");
 
 const appointmentSchema = new mongoose.Schema(
   {
@@ -17,12 +18,14 @@ const appointmentSchema = new mongoose.Schema(
       ref: "Clinic",
       required: true,
     },
-    date: { type: Date, required: true },
+    date: { type: String, required: true },
+    hour: { type: String, require: true },
+    duration: { type: Number, require: true },
     description: { type: String },
     status: {
       type: String,
-      enum: ["scheduled", "completed", "cancelled"],
       default: "scheduled",
+      required: true,
     },
     duration: { type: String, required: true },
   },

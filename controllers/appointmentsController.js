@@ -15,12 +15,14 @@ const getAppointments = async (req, res) => {
 // 🔹 Crear cita
 const createAppointment = async (req, res) => {
   try {
-    const { patientId, dentistId, date, duration, description } = req.body;
+    const { patientId, dentistId, date, hour, duration, status, description } = req.body;
     const appointment = await Appointment.create({
       patientId,
       dentistId,
       date,
+      hour,
       duration,
+      status,
       description,
       clinicId: req.user.clinicId,
     });
