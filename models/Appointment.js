@@ -22,11 +22,7 @@ const appointmentSchema = new mongoose.Schema(
     hour: { type: String, require: true },
     duration: { type: Number, require: true },
     description: { type: String },
-    status: {
-      type: String,
-      default: "scheduled",
-      required: true,
-    },
+    status: {type: String, required: true, },
     duration: { type: String, required: true },
   },
   { timestamps: true }

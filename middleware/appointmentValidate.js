@@ -12,6 +12,10 @@ validate.appointmentValidationRules = () => {
     body('hour')
     .notEmpty().withMessage('Hour is required'),
     body('duration').notEmpty().withMessage('Duration is required'),
+    body('status')
+    .trim()
+    .toLowerCase()
+    .isIn(['scheduled', 'pending', 'completed']).withMessage('Status must be "scheduled", "pending" or "completed"'),
   ];
 };
 
