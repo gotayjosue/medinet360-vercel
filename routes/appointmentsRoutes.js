@@ -6,7 +6,7 @@ const {
   deleteAppointment,
 } = require("../controllers/appointmentsController.js");
 const { requireAuth } = require("../middleware/requireAuth.js");
-const validate = require("../middleware/appointmenttValidate.js");
+const validate = require("../middleware/appointmentValidate.js");
 const router = express.Router();
 
 router.use(requireAuth);
