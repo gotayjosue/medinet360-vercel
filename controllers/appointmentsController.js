@@ -5,7 +5,7 @@ const getAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({ clinicId: req.user.clinicId })
       .populate("patientId")
-      .populate("dentistId");
+      .populate("createdBy");
     res.status(200).json(appointments);
   } catch (error) {
     res.status(500).json({ error: error.message });
