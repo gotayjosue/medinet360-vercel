@@ -11,7 +11,9 @@ validate.appointmentValidationRules = () => {
     .matches(/^\d{4}-\d{2}-\d{2}$/).withMessage('Date must be in YYYY-MM-DD format (e.g., 1998-11-17)'),
     body('hour')
     .notEmpty().withMessage('Hour is required'),
-    body('duration').notEmpty().withMessage('Duration is required'),
+    body('duration')
+    .notEmpty().withMessage('Duration is required')
+    .isNumeric().withMessage('Duration must be a number'),
     body('status')
     .trim()
     .toLowerCase()

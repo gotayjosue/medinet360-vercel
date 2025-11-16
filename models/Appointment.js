@@ -19,11 +19,10 @@ const appointmentSchema = new mongoose.Schema(
       required: true,
     },
     date: { type: String, required: true },
-    hour: { type: String, require: true },
-    duration: { type: Number, require: true },
+    hour: { type: String, required: true },
+    duration: { type: Number, required: true },
     description: { type: String },
     status: {type: String, required: true, },
-    duration: { type: String, required: true },
   },
   { timestamps: true }
 );
