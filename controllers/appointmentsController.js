@@ -3,6 +3,21 @@ const Appointment = require("../models/Appointment.js");
 // 🔹 Obtener citas por clínica
 const getAppointments = async (req, res) => {
   try {
+
+    console.log('[getAppointments] req.user:', req.user); // <-- debug
+
+    // Validar que el usuario autenticado existe
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthorized: user not found' });
+    }
+
+    // Validar que clinicId existe en el token
+    if (!req.user.clinicId) {
+      return res.status(401).json({ error: 'Unauthorized: clinicId not found in token' });
+    }
+
+    console.log('[getAppointments] clinicId:', req.user.clinicId); // <-- debug
+
     const appointments = await Appointment.find({ clinicId: req.user.clinicId })
       .populate("patientId")
       .populate("dentistId");
