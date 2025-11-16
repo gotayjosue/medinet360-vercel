@@ -9,9 +9,11 @@ const { requireAuth } = require("../middleware/requireAuth.js");
 const validate = require("../middleware/appointmentValidate.js");
 const router = express.Router();
 
-router.get("/", requireAuth, getAppointments);
-router.post("/", requireAuth, validate.appointmentValidationRules(), validate.check, createAppointment);
-router.put("/:id", requireAuth, validate.appointmentValidationRules(), validate.check, updateAppointment);
-router.delete("/:id", requireAuth, deleteAppointment);
+router.use(requireAuth);
+
+router.get("/", getAppointments);
+router.post("/", validate.appointmentValidationRules(), validate.check, createAppointment);
+router.put("/:id", validate.appointmentValidationRules(), validate.check, updateAppointment);
+router.delete("/:id", deleteAppointment);
 
 module.exports = router;
