@@ -16,6 +16,10 @@ const getAppointments = async (req, res) => {
 const createAppointment = async (req, res) => {
   try {
     const { patientId, date, hour, duration, status, description } = req.body;
+    
+    if (date < new Date()) {
+      return res.status(400).json({ error: "La fecha de la cita no puede ser en el pasado" });
+    }
     const appointment = await Appointment.create({
       patientId,
       createdBy: req.user.userId,
