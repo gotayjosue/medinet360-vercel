@@ -26,7 +26,7 @@ const createAppointment = async (req, res) => {
     const appointment = await Appointment.create({
       patientId,
       createdBy: req.user.userId,
-      date,
+      date: date,
       hour,
       duration,
       status,
