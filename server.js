@@ -29,6 +29,7 @@ app.use(flash());
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:4173/",
   "https://medinet360.netlify.app"
 ];
 
