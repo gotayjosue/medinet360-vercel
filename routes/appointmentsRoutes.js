@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getAppointments,
+  getAppointmentById,
   createAppointment,
   updateAppointment,
   deleteAppointment,
@@ -12,6 +13,7 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.get("/", getAppointments);
+router.get("/:id", getAppointmentById);
 router.post("/", validate.appointmentValidationRules(), validate.check, createAppointment);
 router.put("/:id", validate.appointmentValidationRules(), validate.check, updateAppointment);
 router.delete("/:id", deleteAppointment);

@@ -12,6 +12,27 @@ const getAppointments = async (req, res) => {
   }
 };
 
+// 🔹 Obtener cita por ID
+const getAppointmentById = async (req, res) => {
+  try {
+    const appointment = await Appointment.findOne({
+      _id: req.params.id,
+      clinicId: req.user.clinicId
+    })
+    .populate("patientId")
+    .populate("createdBy");
+
+    if (!appointment) {
+      return res.status(404).json({ error: "Cita no encontrada" });
+    }
+
+    res.status(200).json(appointment);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 // 🔹 Crear cita
 const createAppointment = async (req, res) => {
   try {
@@ -73,6 +94,7 @@ const deleteAppointment = async (req, res) => {
 
 module.exports = {
   getAppointments,
+  getAppointmentById,
   createAppointment,
   updateAppointment,
   deleteAppointment
