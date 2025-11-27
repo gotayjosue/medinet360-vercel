@@ -17,7 +17,7 @@ validate.appointmentValidationRules = () => {
     body('status')
     .trim()
     .toLowerCase()
-    .isIn(['scheduled', 'pending', 'completed']).withMessage('Status must be "scheduled", "pending" or "completed"'),
+    .isIn(['scheduled', 'pending', 'completed', 'canceled']).withMessage('Status must be "scheduled", "pending", "completed" or "canceled"'),
   ];
 };
 
