@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema(
       enum: ["doctor", "assistant", "patient"],
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["active", "pending"],
+      default: "active",
+    },
     clinicId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",

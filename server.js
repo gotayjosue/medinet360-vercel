@@ -13,6 +13,7 @@ const authRoutes = require("./routes/authRoutes.js");
 const patientsRoutes = require("./routes/patientsRoutes.js");
 const appointmentsRoutes = require("./routes/appointmentsRoutes.js");
 const clinicsRoutes = require("./routes/clinicsRoutes.js");
+const assistantRoutes = require("./routes/assistantRoutes.js");
 
 // Configuración
 app.use(session({
@@ -59,6 +60,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientsRoutes);
 app.use("/api/appointments", appointmentsRoutes);
 app.use("/api/clinics", clinicsRoutes);
+app.use("/api/assistants", assistantRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

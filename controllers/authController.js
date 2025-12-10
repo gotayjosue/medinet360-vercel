@@ -19,11 +19,12 @@ const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     let assignedClinicId = clinicId;
+    let userStatus = "active"; // Default
 
     // Si es doctor: crea nueva clínica
     if (role === "doctor") {
-      if (!clinicName){
-        return res.status(400).json({ error:"Debes ingresar el nombre de la clinica" })
+      if (!clinicName) {
+        return res.status(400).json({ error: "Debes ingresar el nombre de la clinica" })
       }
       const newClinic = await Clinic.create({
         name: clinicName,
@@ -42,6 +43,7 @@ const register = async (req, res) => {
         return res.status(404).json({ error: "La clínica seleccionada no existe" });
 
       assignedClinicId = clinicId;
+      userStatus = "pending"; // Asistentes inician como pendientes
     }
 
     // Crear usuario
@@ -52,6 +54,7 @@ const register = async (req, res) => {
       password: hashedPassword,
       role,
       clinicId: assignedClinicId,
+      status: userStatus,
     });
 
     // Si el usuario es doctor, actualizar clínica con adminId
@@ -71,6 +74,11 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
+
+    // Verificar si la cuenta está pendiente
+    if (user.status === "pending") {
+      return res.status(403).json({ error: "Tu cuenta está pendiente de aprobación por el doctor." });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ error: "Contraseña incorrecta" });
@@ -109,4 +117,4 @@ function logout(req, res) {
   });
 }
 
-module.exports = {login, register, getProfile, logout}
+module.exports = { login, register, getProfile, logout }
