@@ -20,14 +20,14 @@ const sendAccountActivationEmail = async (email, name) => {
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
-            subject: "Cuenta Activada - MediLink",
+            subject: "Cuenta Activada - Medinet360",
             html: `
         <h1>¡Hola ${name}!</h1>
         <p>Tu cuenta de asistente ha sido aprobada por el doctor.</p>
         <p>Ya puedes iniciar sesión en la plataforma.</p>
         <br>
         <p>Saludos,</p>
-        <p>El equipo de MediLink</p>
+        <p>El equipo de Medinet360</p>
       `,
         };
 
