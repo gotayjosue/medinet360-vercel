@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const { sendAccountActivationEmail } = require("../utils/emailService");
+const { sendAccountActivationEmail, sendAccountRejectionEmail } = require("../utils/emailService");
 
 // Obtener asistentes pendientes de aprobación para la clínica del doctor
 const getPendingAssistants = async (req, res) => {
@@ -68,4 +68,65 @@ const approveAssistant = async (req, res) => {
     }
 };
 
-module.exports = { getPendingAssistants, approveAssistant };
+// Obtener todos los asistentes (activos) de la clínica del doctor
+const getAllAssistants = async (req, res) => {
+    try {
+        const doctorId = req.user.userId;
+        const doctor = await User.findById(doctorId);
+
+        if (!doctor || doctor.role !== "doctor") {
+            return res.status(403).json({ error: "Acceso denegado. Solo doctores pueden ver esta información." });
+        }
+
+        const assistants = await User.find({
+            clinicId: doctor.clinicId,
+            role: "assistant",
+            status: "active",
+        }).select("-password");
+
+        res.status(200).json(assistants);
+    } catch (error) {
+        console.error("Error obteniendo asistentes:", error);
+        res.status(500).json({ error: "Error del servidor" });
+    }
+};
+
+// Rechazar un asistente
+const rejectAssistant = async (req, res) => {
+    try {
+        const { assistantId } = req.body;
+        const doctorId = req.user.userId;
+
+        const doctor = await User.findById(doctorId);
+        if (!doctor || doctor.role !== "doctor") {
+            return res.status(403).json({ error: "Acceso denegado." });
+        }
+
+        const assistant = await User.findById(assistantId);
+        if (!assistant) {
+            return res.status(404).json({ error: "Asistente no encontrado." });
+        }
+
+        // Verificar que pertenezca a la misma clínica
+        if (assistant.clinicId.toString() !== doctor.clinicId.toString()) {
+            return res.status(403).json({ error: "No puedes rechazar asistentes de otra clínica." });
+        }
+
+        if (assistant.status !== "pending") {
+            return res.status(400).json({ error: "Solo se pueden rechazar solicitudes pendientes." });
+        }
+
+        // Enviar correo de notificación antes de eliminar
+        await sendAccountRejectionEmail(assistant.email, assistant.name);
+
+        // Eliminar el usuario
+        await User.findByIdAndDelete(assistantId);
+
+        res.status(200).json({ message: "Solicitud rechazada y usuario eliminado." });
+    } catch (error) {
+        console.error("Error rechazando asistente:", error);
+        res.status(500).json({ error: "Error del servidor" });
+    }
+};
+
+module.exports = { getPendingAssistants, approveAssistant, getAllAssistants, rejectAssistant };

@@ -4,6 +4,8 @@ const assistantsController = require("../controllers/assistantsController");
 const { requireAuth } = require("../middleware/requireAuth");
 
 router.get("/pending", requireAuth, assistantsController.getPendingAssistants);
+router.get("/all", requireAuth, assistantsController.getAllAssistants);
 router.post("/approve", requireAuth, assistantsController.approveAssistant);
+router.post("/reject", requireAuth, assistantsController.rejectAssistant);
 
 module.exports = router;

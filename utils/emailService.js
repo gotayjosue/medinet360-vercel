@@ -39,4 +39,32 @@ const sendAccountActivationEmail = async (email, name) => {
     }
 };
 
-module.exports = { sendAccountActivationEmail };
+/**
+ * Envía un correo de notificación de rechazo de cuenta.
+ * @param {string} email - Correo del destinatario
+ * @param {string} name - Nombre del usuario
+ */
+const sendAccountRejectionEmail = async (email, name) => {
+    try {
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Solicitud de Cuenta - Medinet360",
+            html: `
+        <h1>Hola ${name}</h1>
+        <p>Lamentamos informarte que tu solicitud de cuenta de asistente no ha sido aprobada.</p>
+        <p>Si crees que esto es un error, por favor contacta al administrador de la clínica.</p>
+        <br>
+        <p>Saludos,</p>
+        <p>El equipo de Medinet360</p>
+      `,
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Correo de rechazo enviado: " + info.response);
+    } catch (error) {
+        console.error("Error enviando correo de rechazo:", error);
+    }
+};
+
+module.exports = { sendAccountActivationEmail, sendAccountRejectionEmail };
