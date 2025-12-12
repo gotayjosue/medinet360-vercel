@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 const sendAccountActivationEmail = async (email, name) => {
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"Medinet360" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: "Cuenta Activada - Medinet360",
             html: `
