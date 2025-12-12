@@ -26,7 +26,7 @@ const sendAccountActivationEmail = async (email, name) => {
             html: `
         <h1>¡Hola ${name}!</h1>
         <p>Tu cuenta de asistente ha sido aprobada por el doctor.</p>
-        <p>Ya puedes iniciar sesión en la plataforma.</p>
+        <p>Ya puedes <a href="https://medinet360.netlify.app/signin">iniciar sesión en la plataforma.</a></p>
         <br>
         <p>Saludos,</p>
         <p>El equipo de Medinet360</p>
