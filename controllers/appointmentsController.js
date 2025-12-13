@@ -19,8 +19,8 @@ const getAppointmentById = async (req, res) => {
       _id: req.params.id,
       clinicId: req.user.clinicId
     })
-    .populate("patientId")
-    .populate("createdBy");
+      .populate("patientId")
+      .populate("createdBy");
 
     if (!appointment) {
       return res.status(404).json({ error: "Cita no encontrada" });
@@ -52,7 +52,7 @@ const createAppointment = async (req, res) => {
 
     const appointment = await Appointment.create({
       patientId,
-      createdBy: req.user.userId,
+      createdBy: req.user._id,
       date: date,
       hour,
       duration,
