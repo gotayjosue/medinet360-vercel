@@ -84,7 +84,7 @@ const login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ error: "Contraseña incorrecta" });
 
     const token = jwt.sign(
-      { userId: user._id, role: user.role, clinicId: user.clinicId },
+      { userId: user._id, role: user.role, clinicId: user.clinicId, permissions: user.permissions },
       JWT_SECRET,
       { expiresIn: "1h" }
     );
