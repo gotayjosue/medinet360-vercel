@@ -8,5 +8,6 @@ router.get("/all", requireAuth, assistantsController.getAllAssistants);
 router.post("/approve", requireAuth, assistantsController.approveAssistant);
 router.post("/reject", requireAuth, assistantsController.rejectAssistant);
 router.put("/update-permissions", requireAuth, assistantsController.updateAssistantPermissions);
+router.get("/permissions/:assistantId", requireAuth, assistantsController.getAssistantPermissions);
 
 module.exports = router;

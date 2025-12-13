@@ -129,6 +129,37 @@ const rejectAssistant = async (req, res) => {
     }
 };
 
+const getAssistantPermissions = async (req, res) => {
+  try {
+    // Solo doctor puede consultar
+    if (req.user.role !== 'doctor') {
+      return res.status(403).json({ error: 'No autorizado' });
+    }
+
+    const { assistantId } = req.params;
+
+    // Buscar asistente en la misma clínica
+    const assistant = await User.findOne({
+      _id: assistantId,
+      role: 'assistant',
+      clinicId: req.user.clinicId
+    }).select('permissions name email');
+
+    if (!assistant) {
+      return res.status(404).json({ error: 'Asistente no encontrado' });
+    }
+
+    res.json({
+      assistantId: assistant._id,
+      name: assistant.name,
+      email: assistant.email,
+      permissions: assistant.permissions || {}
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const updateAssistantPermissions = async (req, res) => {
   try {
     // 1️⃣ Solo doctor
@@ -185,5 +216,6 @@ module.exports = {
     approveAssistant, 
     getAllAssistants, 
     rejectAssistant, 
+    getAssistantPermissions,
     updateAssistantPermissions, 
 };
