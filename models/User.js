@@ -20,6 +20,17 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",
     },
+    permissions: {
+      type: Object,
+      default: {
+        createPatient: false,
+        editPatient: false,
+        deletePatient: false,
+        createAppointment: false,
+        editAppointment: false,
+        deleteAppointment: false,
+      },
+    },
   },
   { timestamps: true }
 );

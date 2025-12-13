@@ -8,14 +8,15 @@ const {
 } = require("../controllers/appointmentsController.js");
 const { requireAuth } = require("../middleware/requireAuth.js");
 const validate = require("../middleware/appointmentValidate.js");
+const checkPermissions = require("../middleware/checkPermissions.js");
 const router = express.Router();
 
 router.use(requireAuth);
 
 router.get("/", getAppointments);
 router.get("/:id", getAppointmentById);
-router.post("/", validate.appointmentValidationRules(), validate.check, createAppointment);
-router.put("/:id", validate.appointmentValidationRules(), validate.check, updateAppointment);
-router.delete("/:id", deleteAppointment);
+router.post("/", checkPermissions("createAppointment"), validate.appointmentValidationRules(), validate.check, createAppointment);
+router.put("/:id", checkPermissions("editAppointment"), validate.appointmentValidationRules(), validate.check, updateAppointment);
+router.delete("/:id", checkPermissions("deleteAppointment"), deleteAppointment);
 
 module.exports = router;
