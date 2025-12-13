@@ -129,4 +129,61 @@ const rejectAssistant = async (req, res) => {
     }
 };
 
-module.exports = { getPendingAssistants, approveAssistant, getAllAssistants, rejectAssistant };
+const updateAssistantPermissions = async (req, res) => {
+  try {
+    // 1️⃣ Solo doctor
+    if (req.user.role !== 'doctor') {
+      return res.status(403).json({ error: 'No autorizado' });
+    }
+
+    const { assistantId } = req.params;
+    const { permissions } = req.body;
+
+    // 2️⃣ Buscar asistente
+    const assistant = await User.findOne({
+      _id: assistantId,
+      role: 'assistant',
+      clinicId: req.user.clinicId
+    });
+
+    if (!assistant) {
+      return res.status(404).json({ error: 'Asistente no encontrado' });
+    }
+
+    // 3️⃣ Lista blanca de permisos válidos
+    const allowedPermissions = [
+      'createPatient',
+      'editPatient',
+      'deletePatient',
+      'createAppointment',
+      'editAppointment',
+      'deleteAppointment'
+    ];
+
+    // 4️⃣ Actualizar solo permisos permitidos
+    allowedPermissions.forEach(key => {
+      if (permissions.hasOwnProperty(key)) {
+        assistant.permissions[key] = permissions[key];
+      }
+    });
+
+    await assistant.save();
+
+    res.json({
+      message: 'Permisos actualizados correctamente',
+      permissions: assistant.permissions
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports = { 
+    getPendingAssistants, 
+    approveAssistant, 
+    getAllAssistants, 
+    rejectAssistant, 
+    updateAssistantPermissions, 
+};

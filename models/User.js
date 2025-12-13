@@ -21,15 +21,12 @@ const userSchema = new mongoose.Schema(
       ref: "Clinic",
     },
     permissions: {
-      type: Object,
-      default: {
-        createPatient: false,
-        editPatient: false,
-        deletePatient: false,
-        createAppointment: false,
-        editAppointment: false,
-        deleteAppointment: false,
-      },
+      createPatient: { type: Boolean, default: false },
+      editPatient: { type: Boolean, default: false },
+      deletePatient: { type: Boolean, default: false },
+      createAppointment: { type: Boolean, default: false },
+      editAppointment: { type: Boolean, default: false },
+      deleteAppointment: { type: Boolean, default: false },
     },
   },
   { timestamps: true }
